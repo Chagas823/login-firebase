@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card px-5 py-5" id="form1">
+                    <div class="form-data" v-if="!submitted">
+                        <div class="forms-inputs mb-4"> <span>Email or username</span>
+                            <input autocomplete="off" type="text" v-model="email" id="email"
+                                v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}"
+                                v-on:blur="emailBlured = true">
+                                <input autocomplete="off" type="text" v-model="email" id="username"
+                                v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}"
+                                v-on:blur="emailBlured = true">
+                            <div class="invalid-feedback">A valid email is required!</div>
+                        </div>
+                        <div class="forms-inputs mb-4"> <span>Password</span> <input autocomplete="off" type="password"
+                                v-model="password" id="password"
+                                v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}"
+                                v-on:blur="passwordBlured = true">
+                            <div class="invalid-feedback">Password must be 8 character!</div>
+                        </div>
+                        <div class="mb-3"> <button v-on:click.stop.prevent="submit" class="btn btn-dark w-100"
+                                id="botao">Login</button> </div>
+                    </div>
+                    <div class="success-data" v-else>
+                        <div class="text-center d-flex flex-column"> <i class='bx bxs-badge-check'></i> <span
+                                class="text-center fs-1">You have been logged in <br> Successfully</span> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyAeAkEzJA0aOHJ2fCCJc74gjpjznP3rgxI",
+        authDomain: "fir-crud-efb27.firebaseapp.com",
+        projectId: "fir-crud-efb27",
+        storageBucket: "fir-crud-efb27.appspot.com",
+        messagingSenderId: "313734439969",
+        appId: "1:313734439969:web:edb27e89018dba685f2f60"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const btn = document.getElementById('botao');
+    btn.addEventListener('click', (e) => {
+        var email = document.getElementById('email').value;
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        set(ref(database, 'users/' + username,), {
+            username: username,
+            email: email,
+            password: password
+        }).then(() => {
+            // Data saved successfully!
+            alert('cadastrado')
+        })
+            .catch((error) => {
+                // The write failed...
+                alert(error);
+            });
+
+    });
+
+    
+</script>
